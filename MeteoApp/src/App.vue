@@ -7,12 +7,17 @@ import Highlights from './components/Highlights.vue';
 const city = ref('Khotkovo');
 const weatherInfo = ref(null);
 
-const getWeather = () => {
-  fetch(`${BASE_URL}?q=${city.value}&units=metric&appid=${API_KEY}`)
-    .then(response => response.json())
-    .then(data => (weatherInfo.value = data));
+const getWeather = async () => {
+  try {
+    const response = await fetch(
+      `${BASE_URL}?q=${city.value}&units=metric&appid=${API_KEY}`,
+    );
+    const data = await response.json();
+    weatherInfo.value = data;
+  } catch (error) {
+    console.error('Ошибка при получении данных о погоде:', error);
+  }
 };
-
 onMounted(getWeather);
 </script>
 
@@ -104,13 +109,14 @@ onMounted(getWeather);
   align-items: center
   min-height: 100vh
   padding: 20px 0
-  background-color: #59585d
+  background-color: #412345
 
 .laptop
   width: 100%
   padding: 20px
-  background-color: #0e100f
+  background-color: #2D1B2F
   border-radius: 25px
+  border: 1px solid white
 
 .sections
   display: flex
@@ -159,6 +165,7 @@ onMounted(getWeather);
   background: url('./assets/img/gradient-1.jpg') no-repeat 50% 50%
   background-size: cover
   border-radius: 25px
+  border: 0.5px solid white
 
 .search
   width: 100%
